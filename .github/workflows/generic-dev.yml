@@ -70,6 +70,6 @@ jobs:
             -Dbin_contrib=true `
             -Ddefault_library=shared `
             -Dpkg_config_path=C:\lz4\lib\pkgconfig;C:\vcpkg\packages\zlib_x64-windows\lib\pkgconfig `
-            -Dcmake_prefix_path=C:\vcpkg\packages\liblzma_x64-windows\share\cmake `
+            -Dcmake_prefix_path=C:\vcpkg\packages\liblzma_x64-windows\share\liblzma `
             builddir
         meson compile -C builddir
