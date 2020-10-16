@@ -74,5 +74,6 @@ jobs:
             -Dauto_features=enabled `
             -Dbin_programs=true `
             -Dbin_contrib=true `
+            -Ddefault_library=shared `
             builddir
         meson compile -C builddir
