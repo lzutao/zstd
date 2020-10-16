@@ -31,13 +31,14 @@ test_includes = [ include_directories(join_paths(zstd_rootdir, 'programs')) ]
 
 datagen_sources = [join_paths(zstd_rootdir, 'programs/datagen.c'),
   join_paths(zstd_rootdir, 'tests/datagencli.c')]
+if cc_id == compiler_msvc
+  datagen_c_args = [ '/DNDEBUG' ]
+else
+  datagen_c_args = [ '-DNDEBUG' ]
+endif
 datagen = executable('datagen',
   datagen_sources,
-  c_args: if cc_id == compiler_msvc
-    [ '/DNDEBUG' ]
-  else
-    [ '-DNDEBUG' ]
-  endif,
+  c_args: datagen_c_args,
   include_directories: test_includes,
   dependencies: libzstd_dep,
   install: false)
