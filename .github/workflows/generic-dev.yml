@@ -52,6 +52,7 @@ jobs:
 
     - name: install zlib
       run: |
+        vcpkg integrate install
         vcpkg install --triplet x64-windows zlib
 
     - name: install liblzma
@@ -70,6 +71,7 @@ jobs:
             -Dbin_contrib=true `
             -Ddefault_library=shared `
             -Dpkg_config_path="C:\vcpkg\packages\zlib_x64-windows\lib\pkgconfig;C:\lz4\lib\pkgconfig" `
-            -Dcmake_prefix_path=C:\vcpkg\packages\liblzma_x64-windows\share\liblzma `
+            -Dcmake_prefix_path=C:\src\vcpkg\scripts\buildsystems\ `
+            -Dc_args="-IC:\vcpkg\packages\liblzma_x64-windows\include " `
             builddir
         meson compile -C builddir
