@@ -98,14 +98,15 @@ zstd_frugal_sources = [join_paths(zstd_rootdir, 'programs/zstdcli.c'),
 
 # Minimal target, with only zstd compression and decompression.
 # No bench. No legacy.
+if cc_id == compiler_msvc
+  zstd_frugal_c_args = [ '/DZSTD_NOBENCH', '/DZSTD_NODICT' ]
+else
+  zstd_frugal_c_args = [ '-DZSTD_NOBENCH', '-DZSTD_NODICT' ]
+endif
 executable('zstd-frugal',
   zstd_frugal_sources,
   dependencies: libzstd_dep,
-  c_args:   if cc_id == compiler_msvc
-    [ '/DZSTD_NOBENCH', '/DZSTD_NODICT' ]
-  else
-    [ '-DZSTD_NOBENCH', '-DZSTD_NODICT' ]
-  endif,
+  c_args: zstd_frugal_c_args,
   install: true)
 
 install_data(join_paths(zstd_rootdir, 'programs/zstdgrep'),
