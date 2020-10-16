@@ -70,7 +70,11 @@ endif
 libzstd_deps = []
 if use_multi_thread
   message('Enable multi-threading support')
-  add_project_arguments('-DZSTD_MULTITHREAD', language: 'c')
+  if [compiler_gcc, compiler_clang].contains(cc_id)
+    add_project_arguments('-DZSTD_MULTITHREAD', language: 'c')
+  else
+    add_project_arguments('/DZSTD_MULTITHREAD', language: 'c')
+  endif
   libzstd_deps = [ thread_dep ]
 endif
 
@@ -83,10 +87,10 @@ if cc_id == compiler_msvc
         include_directories: include_directories(join_paths(zstd_rootdir, 'lib')),
       )
     ]
-    libzstd_c_args += ['-DZSTD_DLL_EXPORT=1',
-      '-DZSTD_HEAPMODE=0',
-      '-D_CONSOLE',
-      '-D_CRT_SECURE_NO_WARNINGS']
+    libzstd_c_args += ['/DZSTD_DLL_EXPORT=1',
+      '/DZSTD_HEAPMODE=0',
+      '/D_CONSOLE',
+      '/D_CRT_SECURE_NO_WARNINGS']
   else
     libzstd_c_args += ['-DZSTD_HEAPMODE=0',
       '-D_CRT_SECURE_NO_WARNINGS']
@@ -101,7 +105,12 @@ libzstd_c_args += mingw_ansi_stdio_flags
 
 libzstd_debug_cflags = []
 if use_debug
-  libzstd_c_args += '-DDEBUGLEVEL=@0@'.format(debug_level)
+  if cc_id == compiler_msvc
+    libzstd_c_args += '/DDEBUGLEVEL=@0@'.format(debug_level)
+  else
+    libzstd_c_args += '-DDEBUGLEVEL=@0@'.format(debug_level)
+  endif
+
   if cc_id == compiler_gcc or cc_id == compiler_clang
     libzstd_debug_cflags = ['-Wstrict-aliasing=1', '-Wswitch-enum',
       '-Wdeclaration-after-statement', '-Wstrict-prototypes',

@@ -103,7 +103,11 @@ use_lz4 = lz4_dep.found()
 # Compiler flags
 # =============================================================================
 
-add_project_arguments('-DXXH_NAMESPACE=ZSTD_', language: ['c'])
+if [compiler_gcc, compiler_clang].contains(cc_id)
+  add_project_arguments('-DXXH_NAMESPACE=ZSTD_', language: ['c'])
+else
+  add_project_arguments('/DXXH_NAMESPACE=ZSTD_', language: ['c'])
+endif
 
 if [compiler_gcc, compiler_clang].contains(cc_id)
   common_warning_flags = [ '-Wextra', '-Wundef', '-Wshadow', '-Wcast-align', '-Wcast-qual' ]

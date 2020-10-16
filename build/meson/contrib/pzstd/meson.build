@@ -16,9 +16,17 @@ pzstd_sources = [join_paths(zstd_rootdir, 'programs/util.c'),
   join_paths(zstd_rootdir, 'contrib/pzstd/Options.cpp'),
   join_paths(zstd_rootdir, 'contrib/pzstd/Pzstd.cpp'),
   join_paths(zstd_rootdir, 'contrib/pzstd/SkippableFrame.cpp')]
+
+pzstd_cpp_args = []
+if [compiler_gcc, compiler_clang].contains(cc_id)
+  pzstd_cpp_args += [ '-DNDEBUG', '-Wno-shadow', '-pedantic' ]
+else
+  pzstd_cpp_args += [ '/DNDEBUG' ]
+endif
+
 pzstd = executable('pzstd',
   pzstd_sources,
-  cpp_args: [ '-DNDEBUG', '-Wno-shadow', '-pedantic' ],
+  cpp_args: pzstd_cpp_args,
   include_directories: pzstd_includes,
   dependencies: [ libzstd_dep, thread_dep ],
   install: true)

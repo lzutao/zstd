@@ -21,31 +21,55 @@ zstd_programs_sources = [join_paths(zstd_rootdir, 'programs/zstdcli.c'),
 
 zstd_c_args = libzstd_debug_cflags
 if use_multi_thread
-  zstd_c_args += [ '-DZSTD_MULTITHREAD' ]
+  if cc_id == compiler_msvc
+    zstd_c_args += [ '/DZSTD_MULTITHREAD' ]
+  else
+    zstd_c_args += [ '-DZSTD_MULTITHREAD' ]
+  endif
 endif
 
 zstd_deps = [ libzstd_dep ]
 if use_zlib
   zstd_deps += [ zlib_dep ]
-  zstd_c_args += [ '-DZSTD_GZCOMPRESS', '-DZSTD_GZDECOMPRESS' ]
+  if cc_id == compiler_msvc
+    zstd_c_args += [ '/DZSTD_GZCOMPRESS', '/DZSTD_GZDECOMPRESS' ]
+  else
+    zstd_c_args += [ '-DZSTD_GZCOMPRESS', '-DZSTD_GZDECOMPRESS' ]
+  endif
 endif
 
 if use_lzma
   zstd_deps += [ lzma_dep ]
-  zstd_c_args += [ '-DZSTD_LZMACOMPRESS', '-DZSTD_LZMADECOMPRESS' ]
+  if cc_id == compiler_msvc
+    zstd_c_args += [ '/DZSTD_LZMACOMPRESS', '/DZSTD_LZMADECOMPRESS' ]
+  else
+    zstd_c_args += [ '-DZSTD_LZMACOMPRESS', '-DZSTD_LZMADECOMPRESS' ]
+  endif
 endif
 
 if use_lz4
   zstd_deps += [ lz4_dep ]
-  zstd_c_args += [ '-DZSTD_LZ4COMPRESS', '-DZSTD_LZ4DECOMPRESS' ]
+  if cc_id == compiler_msvc
+    zstd_c_args += [ '/DZSTD_LZ4COMPRESS', '/DZSTD_LZ4DECOMPRESS' ]
+  else
+    zstd_c_args += [ '-DZSTD_LZ4COMPRESS', '-DZSTD_LZ4DECOMPRESS' ]
+  endif
 endif
 
 export_dynamic_on_windows = false
 # explicit backtrace enable/disable for Linux & Darwin
 if not use_backtrace
-  zstd_c_args += '-DBACKTRACE_ENABLE=0'
+  if cc_id == compiler_msvc
+    zstd_c_args += [ '/DBACKTRACE_ENABLE=0' ]
+  else
+    zstd_c_args += '-DBACKTRACE_ENABLE=0'
+  endif
 elif use_debug and host_machine_os == os_windows  # MinGW target
-  zstd_c_args += '-DBACKTRACE_ENABLE=1'
+  if cc_id == compiler_msvc
+    zstd_c_args += [ '/DDBACKTRACE_ENABLE=1' ]
+  else
+    zstd_c_args += '-DBACKTRACE_ENABLE=1'
+  endif
   export_dynamic_on_windows = true
 endif
 
@@ -77,7 +101,11 @@ zstd_frugal_sources = [join_paths(zstd_rootdir, 'programs/zstdcli.c'),
 executable('zstd-frugal',
   zstd_frugal_sources,
   dependencies: libzstd_dep,
-  c_args: [ '-DZSTD_NOBENCH', '-DZSTD_NODICT' ],
+  c_args:   if cc_id == compiler_msvc
+    [ '/DZSTD_NOBENCH', '/DZSTD_NODICT' ]
+  else
+    [ '-DZSTD_NOBENCH', '-DZSTD_NODICT' ]
+  endif,
   install: true)
 
 install_data(join_paths(zstd_rootdir, 'programs/zstdgrep'),

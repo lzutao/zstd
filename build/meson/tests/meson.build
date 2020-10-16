@@ -33,7 +33,11 @@ datagen_sources = [join_paths(zstd_rootdir, 'programs/datagen.c'),
   join_paths(zstd_rootdir, 'tests/datagencli.c')]
 datagen = executable('datagen',
   datagen_sources,
-  c_args: [ '-DNDEBUG' ],
+  c_args: if cc_id == compiler_msvc
+    [ '/DNDEBUG' ]
+  else
+    [ '-DNDEBUG' ]
+  endif,
   include_directories: test_includes,
   dependencies: libzstd_dep,
   install: false)
