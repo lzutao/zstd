@@ -35,7 +35,6 @@ jobs:
 
     - name: install meson
       run: |
-        echo "$env:userprofile\AppData\Roaming\Python\Python37\Scripts" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
         pip install -U meson
 
     - run: |
@@ -50,20 +49,15 @@ jobs:
         cd builddir
         meson compile
         meson install
-        echo "PKG_CONFIG_PATH=C:\lz4\lib\pkgconfig" `
-        | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
 
     - name: install zlib
       run: |
         vcpkg install --triplet x64-windows zlib
-        echo "PKG_CONFIG_PATH=C:\vcpkg\packages\zlib_x64-windows\lib\pkgconfig;$env:PKG_CONFIG_PATH" `
-        | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
 
     - name: install liblzma
       run: |
         vcpkg install --triplet x64-windows liblzma
-        echo "CPPFLAGS=-IC:\vcpkg\packages\liblzma_x64-windows\include $env:CPPFLAGS" `
-        | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
+        Tree C:\vcpkg\packages\liblzma_x64-windows /F
 
     - name: test
       run: |
@@ -75,5 +69,7 @@ jobs:
             -Dbin_programs=true `
             -Dbin_contrib=true `
             -Ddefault_library=shared `
+            -Dpkg_config_path=C:\lz4\lib\pkgconfig;C:\vcpkg\packages\zlib_x64-windows\lib\pkgconfig `
+            -Dcmake_prefix_path=C:\vcpkg\packages\liblzma_x64-windows\share\cmake `
             builddir
         meson compile -C builddir
