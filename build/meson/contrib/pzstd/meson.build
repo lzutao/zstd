@@ -20,7 +20,7 @@ pzstd_sources = [
 ]
 
 pzstd_cpp_args = []
-if [compiler_gcc, compiler_clang].contains(cc_id)
+if is_like_gcc
   pzstd_cpp_args += [ '-DNDEBUG', '-Wno-shadow', '-pedantic' ]
 else
   pzstd_cpp_args += [ '/DNDEBUG' ]
