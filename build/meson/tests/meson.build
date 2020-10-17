@@ -31,7 +31,7 @@ test_includes = [ include_directories(join_paths(zstd_rootdir, 'programs')) ]
 
 datagen_sources = [join_paths(zstd_rootdir, 'programs/datagen.c'),
   join_paths(zstd_rootdir, 'tests/datagencli.c')]
-if cc_id == compiler_msvc
+if is_like_msvc
   datagen_c_args = [ '/DNDEBUG' ]
 else
   datagen_c_args = [ '-DNDEBUG' ]
@@ -158,7 +158,7 @@ if tests_supported_oses.contains(host_machine_os)
     timeout: 600) # Timeout should work on HDD drive
 endif
 
-if host_machine_os != os_windows
+if not is_os_windows
   playTests_sh = find_program(join_paths(zstd_rootdir, 'tests/playTests.sh'), required: true)
   test('test-zstd',
     playTests_sh,
