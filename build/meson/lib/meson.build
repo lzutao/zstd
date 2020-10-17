@@ -79,7 +79,7 @@ if use_multi_thread
 endif
 
 libzstd_c_args = []
-if cc_id == compiler_msvc
+if is_like_msvc
   if default_library_type != 'static'
     libzstd_sources += [
       windows_mod.compile_resources(
@@ -87,18 +87,22 @@ if cc_id == compiler_msvc
         include_directories: include_directories(join_paths(zstd_rootdir, 'lib')),
       )
     ]
-    libzstd_c_args += ['/DZSTD_DLL_EXPORT=1',
+    libzstd_c_args += [
+      '/DZSTD_DLL_EXPORT=1',
       '/DZSTD_HEAPMODE=0',
       '/D_CONSOLE',
-      '/D_CRT_SECURE_NO_WARNINGS']
+      '/D_CRT_SECURE_NO_WARNINGS',
+    ]
   else
-    libzstd_c_args += ['-DZSTD_HEAPMODE=0',
-      '-D_CRT_SECURE_NO_WARNINGS']
+    libzstd_c_args += [
+      '/DZSTD_HEAPMODE=0',
+      '/D_CRT_SECURE_NO_WARNINGS',
+    ]
   endif
 endif
 
 mingw_ansi_stdio_flags = []
-if host_machine_os == os_windows and cc_id == compiler_gcc
+if is_os_windows and cc_id == compiler_gcc
   mingw_ansi_stdio_flags = [ '-D__USE_MINGW_ANSI_STDIO' ]
 endif
 libzstd_c_args += mingw_ansi_stdio_flags

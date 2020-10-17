@@ -25,16 +25,21 @@ pkgconfig = import('pkgconfig')
 windows_mod = import('windows')
 
 host_machine_os = host_machine.system()
-os_windows = 'windows'
-os_linux = 'linux'
-os_darwin = 'darwin'
-os_freebsd = 'freebsd'
-os_sun = 'sunos'
+is_os_windows = host_machine_os == 'windows'
+is_os_linux = host_machine_os == 'linux'
+is_os_darwin = host_machine_os == 'darwin'
+is_os_freebsd = host_machine_os == 'freebsd'
+is_os_sun = host_machine_os == 'sunos'
 
 cc_id = cc.get_id()
-compiler_gcc = 'gcc'
-compiler_clang = 'clang'
-compiler_msvc = 'msvc'
+cc_arg_syntax = cc.get_argument_syntax()
+is_like_clang = cc_id == 'clang'
+is_like_gcc == cc_arg_syntax == 'gcc'
+is_like_msvc == cc_arg_syntax == 'msvc'
+
+if not is_like_msvc and not is_like_gcc
+  error('Unsupported compiler: @0@'.format(cc_id))
+endif
 
 zstd_version = meson.project_version()
 
@@ -103,13 +108,13 @@ use_lz4 = lz4_dep.found()
 # Compiler flags
 # =============================================================================
 
-if [compiler_gcc, compiler_clang].contains(cc_id)
+if is_like_gcc
   add_project_arguments('-DXXH_NAMESPACE=ZSTD_', language: ['c'])
-else
+elif is_like_msvc
   add_project_arguments('/DXXH_NAMESPACE=ZSTD_', language: ['c'])
 endif
 
-if [compiler_gcc, compiler_clang].contains(cc_id)
+if is_like_gcc
   common_warning_flags = [ '-Wextra', '-Wundef', '-Wshadow', '-Wcast-align', '-Wcast-qual' ]
   if cc_id == compiler_clang
     # Should use Meson's own --werror build option
@@ -120,7 +125,7 @@ if [compiler_gcc, compiler_clang].contains(cc_id)
   cxx_compile_flags = cxx.get_supported_arguments(common_warning_flags)
   add_project_arguments(cc_compile_flags, language : 'c')
   add_project_arguments(cxx_compile_flags, language : 'cpp')
-elif cc_id == compiler_msvc
+elif is_like_msvc
   msvc_compile_flags = [ '/D_UNICODE', '/DUNICODE' ]
   if use_multi_thread
     msvc_compile_flags += '/MP'
