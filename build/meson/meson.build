@@ -34,8 +34,8 @@ is_os_sun = host_machine_os == 'sunos'
 cc_id = cc.get_id()
 cc_arg_syntax = cc.get_argument_syntax()
 is_like_clang = cc_id == 'clang'
-is_like_gcc == cc_arg_syntax == 'gcc'
-is_like_msvc == cc_arg_syntax == 'msvc'
+is_like_gcc = cc_arg_syntax == 'gcc'
+is_like_msvc = cc_arg_syntax == 'msvc'
 
 if not is_like_msvc and not is_like_gcc
   error('Unsupported compiler: @0@'.format(cc_id))
