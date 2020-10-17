@@ -63,6 +63,8 @@ jobs:
     - name: test
       run: |
         cd build\meson
+        $env:myX = "clang"
+        $env:myX = "clang++"
         meson setup `
             --buildtype=debugoptimized `
             -Db_lundef=false `
