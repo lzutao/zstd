@@ -70,7 +70,7 @@ jobs:
             -Dbin_programs=true `
             -Dbin_contrib=true `
             -Ddefault_library=static `
-            -Dpkg_config_path="[C:\vcpkg\packages\zlib_x64-windows\lib\pkgconfig, C:\lz4\lib\pkgconfig]" `
+            -Dpkg_config_path="['C:\vcpkg\packages\zlib_x64-windows\lib\pkgconfig', 'C:\lz4\lib\pkgconfig']" `
             -Dcmake_prefix_path=C:\src\vcpkg\scripts\buildsystems\ `
             -Dc_args="-IC:\vcpkg\packages\liblzma_x64-windows\include " `
             builddir
