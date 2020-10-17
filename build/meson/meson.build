@@ -116,7 +116,7 @@ endif
 
 if is_like_gcc
   common_warning_flags = [ '-Wextra', '-Wundef', '-Wshadow', '-Wcast-align', '-Wcast-qual' ]
-  if cc_id == compiler_clang
+  if is_like_clang
     # Should use Meson's own --werror build option
     #common_warning_flags += '-Werror'
     common_warning_flags += ['-Wconversion', '-Wno-sign-conversion', '-Wdocumentation']
