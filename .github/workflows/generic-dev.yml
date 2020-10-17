@@ -64,7 +64,7 @@ jobs:
       run: |
         cd build\meson
         $env:CC = "clang"
-        $env:C++ = "clang++"
+        $env:CXX = "clang++"
         meson setup `
             --buildtype=debugoptimized `
             -Db_lundef=false `
