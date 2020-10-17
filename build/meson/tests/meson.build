@@ -10,8 +10,8 @@
 
 zstd_rootdir = '../../..'
 
-tests_supported_oses = [os_linux, 'gnu/kfreebsd', os_darwin, 'gnu', 'openbsd',
-  os_freebsd, 'netbsd', 'dragonfly', os_sun]
+tests_supported_oses = ['linux', 'gnu/kfreebsd', 'darwin', 'gnu', 'openbsd',
+  'freebsd', 'netbsd', 'dragonfly', 'sunos']
 
 # =============================================================================
 # Test flags
