@@ -126,7 +126,7 @@ if is_like_gcc
   add_project_arguments(cc_compile_flags, language : 'c')
   add_project_arguments(cxx_compile_flags, language : 'cpp')
 elif is_like_msvc
-  msvc_compile_flags = [ '/D_UNICODE', '/DUNICODE' ]
+  msvc_compile_flags = [ '/D_UNICODE', '/DUNICODE', '/DNOMINMAX' ]
   if use_multi_thread
     msvc_compile_flags += '/MP'
   endif
