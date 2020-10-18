@@ -138,6 +138,7 @@ extern "C" {
 #  define IS_CONSOLE(stdStream) _isatty(_fileno(stdStream))
 #elif defined(WIN32) || defined(_WIN32)
 #  include <io.h>      /* _isatty */
+   #define NOMINMAX    /* Avoid clashing name with max in windows.h and std */
 #  include <windows.h> /* DeviceIoControl, HANDLE, FSCTL_SET_SPARSE */
 #  include <stdio.h>   /* FILE */
 static __inline int IS_CONSOLE(FILE* stdStream) {
