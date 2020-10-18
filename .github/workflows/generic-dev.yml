@@ -69,7 +69,7 @@ jobs:
             -Dauto_features=enabled `
             -Dbin_programs=true `
             -Dbin_contrib=true `
-            -Ddefault_library=static `
+            -Ddefault_library=shared `
             -Dpkg_config_path="C:\vcpkg\packages\zlib_x64-windows\lib\pkgconfig;C:\lz4\lib\pkgconfig" `
             -Dc_args="-IC:\vcpkg\packages\liblzma_x64-windows\include " `
             builddir
