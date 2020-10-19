@@ -1187,6 +1187,6 @@ size_t ZSTD_referenceExternalSequences(ZSTD_CCtx* cctx, rawSeq* seq, size_t nbSe
 
 /** ZSTD_cycleLog() :
  *  condition for correct operation : hashLog > 1 */
-U32 ZSTD_cycleLog(U32 hashLog, ZSTD_strategy strat);
+ZSTD_COMPRESS_DLL_PUBLIC U32 ZSTD_cycleLog(U32 hashLog, ZSTD_strategy strat);
 
 #endif /* ZSTD_COMPRESS_H */
