@@ -64,7 +64,7 @@ jobs:
       run: |
         cd build\meson
         meson setup `
-            --buildtype=debugoptimized `
+            --buildtype=debug `
             -Db_lundef=false `
             -Dauto_features=enabled `
             -Dbin_programs=true `
