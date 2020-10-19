@@ -1057,7 +1057,7 @@ ZSTD_clampCParams(ZSTD_compressionParameters cParams)
 
 /** ZSTD_cycleLog() :
  *  condition for correct operation : hashLog > 1 */
-ZDICTLIB_API U32 ZSTD_cycleLog(U32 hashLog, ZSTD_strategy strat)
+ZSTDLIB_API U32 ZSTD_cycleLog(U32 hashLog, ZSTD_strategy strat)
 {
     U32 const btScale = ((U32)strat >= (U32)ZSTD_btlazy2);
     return hashLog - btScale;
