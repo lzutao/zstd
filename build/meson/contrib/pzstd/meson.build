@@ -11,14 +11,24 @@ zstd_rootdir = '../../../..'
 
 pzstd_includes = include_directories(join_paths(zstd_rootdir, 'programs'),
   join_paths(zstd_rootdir, 'contrib/pzstd'))
-pzstd_sources = [join_paths(zstd_rootdir, 'programs/util.c'),
+pzstd_sources = [
   join_paths(zstd_rootdir, 'contrib/pzstd/main.cpp'),
   join_paths(zstd_rootdir, 'contrib/pzstd/Options.cpp'),
   join_paths(zstd_rootdir, 'contrib/pzstd/Pzstd.cpp'),
-  join_paths(zstd_rootdir, 'contrib/pzstd/SkippableFrame.cpp')]
+  join_paths(zstd_rootdir, 'contrib/pzstd/SkippableFrame.cpp'),
+  join_paths(zstd_rootdir, 'programs/util.c'),
+]
+
+pzstd_cpp_args = []
+if is_like_gcc
+  pzstd_cpp_args += [ '-DNDEBUG', '-Wno-shadow', '-pedantic' ]
+else
+  pzstd_cpp_args += [ '/DNDEBUG' ]
+endif
+
 pzstd = executable('pzstd',
   pzstd_sources,
-  cpp_args: [ '-DNDEBUG', '-Wno-shadow', '-pedantic' ],
+  cpp_args: pzstd_cpp_args,
   include_directories: pzstd_includes,
   dependencies: [ libzstd_dep, thread_dep ],
   install: true)

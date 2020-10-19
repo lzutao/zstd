@@ -10,8 +10,8 @@
 
 zstd_rootdir = '../../..'
 
-tests_supported_oses = [os_linux, 'gnu/kfreebsd', os_darwin, 'gnu', 'openbsd',
-  os_freebsd, 'netbsd', 'dragonfly', os_sun]
+tests_supported_oses = ['linux', 'gnu/kfreebsd', 'darwin', 'gnu', 'openbsd',
+  'freebsd', 'netbsd', 'dragonfly', 'sunos']
 
 # =============================================================================
 # Test flags
@@ -31,9 +31,14 @@ test_includes = [ include_directories(join_paths(zstd_rootdir, 'programs')) ]
 
 datagen_sources = [join_paths(zstd_rootdir, 'programs/datagen.c'),
   join_paths(zstd_rootdir, 'tests/datagencli.c')]
+if is_like_msvc
+  datagen_c_args = [ '/DNDEBUG' ]
+else
+  datagen_c_args = [ '-DNDEBUG' ]
+endif
 datagen = executable('datagen',
   datagen_sources,
-  c_args: [ '-DNDEBUG' ],
+  c_args: datagen_c_args,
   include_directories: test_includes,
   dependencies: libzstd_dep,
   install: false)
@@ -153,7 +158,7 @@ if tests_supported_oses.contains(host_machine_os)
     timeout: 600) # Timeout should work on HDD drive
 endif
 
-if host_machine_os != os_windows
+if not is_os_windows
   playTests_sh = find_program(join_paths(zstd_rootdir, 'tests/playTests.sh'), required: true)
   test('test-zstd',
     playTests_sh,
